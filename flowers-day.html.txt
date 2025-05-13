@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f8e1e8;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .button-container {
+            margin-bottom: 20px;
+        }
+
+        #pressButton {
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            outline: none;
+        }
+
+        #pressButton:hover {
+            transform: scale(1.05);
+        }
+
+        #pressButton:active {
+            transform: scale(0.98);
+        }
+
+        #message {
+            font-size: 32px;
+            color: #d6336c;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .flower {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #ff4d6d;
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button id="pressButton">Press</button>
+    </div>
+    <div id="message">Happy Flowers Day My Love!</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const button = document.getElementById('pressButton');
+            const message = document.getElementById('message');
+            const body = document.body;
+            
+            // Flower images - you can replace these URLs with other flower images
+            const flowerImages = [
+                'https://www.freepnglogos.com/uploads/flower-png/flower-png-transparent-images-png-only-26.png',
+                'https://www.freepnglogos.com/uploads/flowers-png/flowers-png-transparent-images-png-only-13.png',
+                'https://www.freepnglogos.com/uploads/flowers-png/flowers-png-transparent-images-png-only-35.png',
+                'https://www.freepnglogos.com/uploads/flowers-png/flowers-png-transparent-images-png-only-0.png'
+            ];
+            
+            button.addEventListener('click', function() {
+                // Show message
+                message.style.opacity = '1';
+                
+                // Create flowers
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(function() {
+                        createFlower();
+                    }, i * 100);
+                }
+                
+                // Create hearts
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(function() {
+                        createHeart();
+                    }, i * 150);
+                }
+            });
+            
+            function createFlower() {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                
+                // Random flower image
+                const randomImageIndex = Math.floor(Math.random() * flowerImages.length);
+                flower.style.backgroundImage = `url(${flowerImages[randomImageIndex]})`;
+                
+                // Random starting position (near the button)
+                const buttonRect = button.getBoundingClientRect();
+                const startX = buttonRect.left + buttonRect.width/2 - 20 + (Math.random() * 40 - 20);
+                const startY = buttonRect.top + buttonRect.height/2 - 20;
+                
+                // Random end position
+                const endX = Math.random() * window.innerWidth;
+                const endY = Math.random() * window.innerHeight;
+                
+                // Set initial position
+                flower.style.left = startX + 'px';
+                flower.style.top = startY + 'px';
+                
+                body.appendChild(flower);
+                
+                // Animate the flower
+                const duration = 3000 + Math.random() * 3000; // 3-6 seconds
+                
+                flower.animate([
+                    { transform: 'translate(0, 0) rotate(0deg) scale(0.2)', opacity: 0 },
+                    { opacity: 1, offset: 0.1 },
+                    { transform: `translate(${endX - startX}px, ${endY - startY}px) rotate(${Math.random() * 360}deg) scale(1)`, opacity: 0 }
+                ], {
+                    duration: duration,
+                    easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+                }).onfinish = function() {
+                    flower.remove();
+                };
+            }
+            
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                
+                // Random starting position (near the button)
+                const buttonRect = button.getBoundingClientRect();
+                const startX = buttonRect.left + buttonRect.width/2 - 12 + (Math.random() * 24 - 12);
+                const startY = buttonRect.top + buttonRect.height/2 - 12;
+                
+                // Random end position
+                const endX = Math.random() * window.innerWidth;
+                const endY = Math.random() * window.innerHeight;
+                
+                // Set initial position
+                heart.style.left = startX + 'px';
+                heart.style.top = startY + 'px';
+                
+                body.appendChild(heart);
+                
+                // Animate the heart
+                const duration = 2000 + Math.random() * 3000; // 2-5 seconds
+                
+                heart.animate([
+                    { transform: 'translate(0, 0) scale(0.2)', opacity: 0 },
+                    { opacity: 1, offset: 0.1 },
+                    { transform: `translate(${endX - startX}px, ${endY - startY}px) scale(1)`, opacity: 0 }
+                ], {
+                    duration: duration,
+                    easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+                }).onfinish = function() {
+                    heart.remove();
+                };
+            }
+        });
+    </script>
+</body>
+</html>
